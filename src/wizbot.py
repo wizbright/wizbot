@@ -11,7 +11,7 @@ config.read('bot.cfg')
 # Config values
 token = config.get('BOT_INFO', 'token')
 allowed = config.get('BOT_INFO', 'allowed')
-print(allowed)
+#print(allowed)
 
 def logger():
     l = logging.getLogger('discord')
@@ -42,6 +42,9 @@ async def on_message(message):
             if log.author == message.author:
                 counter += 1
         await client.edit_message(tmp, 'You have sent {} messages from the launch of the bot.'.format(counter))
+    elif message.content.startswith('!crk') or message.content.startswith('!Crk'):
+        tmp = await client.send_message(message.channel, 'Praise be unto him!')
+        await client.add_reaction(tmp, '🇫')
     elif message.content.startswith('!sleep') and (allowed.find(sender) != -1):
         await asyncio.sleep(5)
         await client.send_message(message.channel, 'Done sleeping')
