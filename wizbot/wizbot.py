@@ -43,8 +43,11 @@ async def on_message(message):
                 counter += 1
         await client.edit_message(tmp, 'You have sent {} messages from the launch of the bot.'.format(counter))
     elif message.content.startswith('!crk') or message.content.startswith('!Crk'):
+        await client.add_reaction(message, '🇫')
         tmp = await client.send_message(message.channel, 'Praise be unto him!')
         await client.add_reaction(tmp, '🇫')
+    elif message.content.startswith('🇫'):
+        await client.add_reaction(message, '🇫')
     elif message.content.startswith('!sleep') and (allowed.find(sender) != -1):
         await asyncio.sleep(5)
         await client.send_message(message.channel, 'Done sleeping')
