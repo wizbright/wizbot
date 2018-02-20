@@ -13,7 +13,7 @@ config.read('bot.cfg')
 bot = commands.Bot(command_prefix='!', description="Wizzie's Bot")
 # Config values
 token = config.get('BOT_INFO', 'token')
-allowed = config.get('BOT_INFO', 'allowed')
+owner = config.get('BOT_INFO', 'owner')
 #print(allowed)
 
 way = True
@@ -71,6 +71,10 @@ async def on_message(message):
     if message.content.startswith('!crk') or message.content.startswith('!Crk'):
         await bot.add_reaction(message, '🇫')
         tmp = await bot.send_message(message.channel, 'Praise be unto him!')
+    elif message.content.startswith('thanks wizbot') or message.content.startswith('Thanks wizbot'):
+        await bot.send_message(message.channel, 'No problem')
+    elif message.content.startswith('!master') and sender == owner:
+        await bot.send_message(message.channel, 'My master is {}'.format(owner))
     await bot.process_commands(message)
 
 def loadCogs():
