@@ -65,9 +65,9 @@ async def choose(*choices : str):
 async def clayton():
     num = random.randrange(start=1, stop=2)
     if num == 1:
-        await bot.say(':^)')
+        await bot.say('/tts :^)')
     if num == 2:
-        await bot.say('(^:')
+        await bot.say('/tts (^:')
 
 @bot.event
 async def on_message(message):
@@ -75,11 +75,11 @@ async def on_message(message):
     #print(sender)
     if message.content.startswith('!crk') or message.content.startswith('!Crk'):
         await bot.add_reaction(message, '🇫')
-        tmp = await bot.send_message(message.channel, 'Praise be unto him!')
+        tmp = await bot.send_message(message.channel, '/tts Praise be unto him!')
     elif message.content.startswith('thanks wizbot') or message.content.startswith('Thanks wizbot'):
-        await bot.send_message(message.channel, 'No problem')
+        await bot.send_message(message.channel, '/tts No problem')
     elif message.content.startswith('!master') and sender == owner:
-        await bot.send_message(message.channel, 'My master is {}'.format(owner))
+        await bot.send_message(message.channel, '/tts My master is {}'.format(owner))
     await bot.process_commands(message)
 
 def loadCogs():
