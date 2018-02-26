@@ -48,6 +48,11 @@ async def on_ready():
     print('------------------------')
 
 # commands
+@bot.command(description='Don\'t trigger me')
+async def triggered():
+    await bot.say('HOLY FUCK I\'M TRIGGERED')
+    await bot.say('REEEEEEEEEEEEEEEEEEEEEEE')
+
 @bot.command(description='But is he a bro?')
 async def gamage():
     await bot.say('What a bro')
