@@ -111,3 +111,4 @@ venv.bak/
 syncscript\.sh
 
 src/bot\.cfg
+.vscode
