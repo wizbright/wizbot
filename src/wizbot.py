@@ -47,7 +47,12 @@ async def on_ready():
     print(bot.user.id)
     print('------------------------')
 
+
 # commands
+@bot.command(description='Assemble the knights')
+async def dilly():
+    await bot.say('Dilly Dilly!')
+
 @bot.command(description='Don\'t trigger me')
 async def triggered():
     await bot.say('HOLY FUCK I\'M TRIGGERED')
