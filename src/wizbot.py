@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 # -*- coding: utf8 -*-
 
 import discord, asyncio
@@ -49,9 +49,6 @@ async def on_ready():
 
 
 # commands
-@bot.command(description='Assemble the knights')
-async def dilly():
-    await bot.say('Dilly Dilly!')
 
 @bot.command(description='Don\'t trigger me')
 async def triggered():
@@ -80,11 +77,13 @@ async def on_message(message):
     #print(sender)
     if message.content.startswith('!crk') or message.content.startswith('!Crk'):
         await bot.add_reaction(message, '🇫')
-        tmp = await bot.send_message(message.channel, '/tts Praise be unto him!')
+        tmp = await bot.send_message(message.channel, '/tts Praise be unto him!', tts=true)
     elif message.content.startswith('thanks wizbot') or message.content.startswith('Thanks wizbot'):
-        await bot.send_message(message.channel, '/tts No problem')
+        await bot.send_message(message.channel, '/tts No problem', tts=true)
     elif message.content.startswith('!master') and sender == owner:
-        await bot.send_message(message.channel, '/tts My master is {}'.format(owner))
+        await bot.send_message(message.channel, 'My master is {}'.format(owner), tts=true)
+    elif message.content.startswith('!dilly'):
+        await bot.send_message(message.channel, 'Dilly Dilly', tts=true)
     await bot.process_commands(message)
 
 def loadCogs():
