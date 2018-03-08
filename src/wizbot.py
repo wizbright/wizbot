@@ -5,6 +5,7 @@ import discord, asyncio
 import configparser, random, sys, os
 import logging, logging.handlers
 from discord.ext import commands
+from discord.ext.commands.cooldowns import BucketType
 
 client = discord.Client()
 config = configparser.ConfigParser()
@@ -47,22 +48,29 @@ async def on_ready():
     print(bot.user.id)
     print('------------------------')
 
+# Rate Limiting
+# Is done by the @commands.cooldown(num per, seconds, BucketType)
+
 
 # commands
-
+@commands.cooldown(1, 60, BucketType.user)
 @bot.command(description='Don\'t trigger me')
 async def triggered():
     await bot.say('HOLY FUCK I\'M TRIGGERED')
     await bot.say('REEEEEEEEEEEEEEEEEEEEEEE')
+    await bot.say()
 
+@commands.cooldown(1, 60, BucketType.user)
 @bot.command(description='But is he a bro?')
 async def gamage():
     await bot.say('What a bro')
 
+@commands.cooldown(1, 60, BucketType.user)
 @bot.command(description='I will make the choice for you')
 async def choose(*choices : str):
     await bot.say(random.choice(choices))
 
+@commands.cooldown(1, 60, BucketType.user)
 @bot.command()
 async def clayton():
     num = random.randrange(start=1, stop=2)
@@ -71,19 +79,25 @@ async def clayton():
     if num == 2:
         await bot.say('(^:')
 
+@commands.cooldown(1, 60, BucketType.user)
+@bot.command()
+async def dilly():
+    await bot.say('Dilly Dilly')
+
+@commands.cooldown(1, 60, BucketType.user)
+@bot.command()
+async def crk():
+    await bot.say('Praise be unto him! 🇫')
+    # the reaction will have to be added later
+
 @bot.event
 async def on_message(message):
     sender = str(message.author)
     #print(sender)
-    if message.content.startswith('!crk') or message.content.startswith('!Crk'):
-        await bot.add_reaction(message, '🇫')
-        tmp = await bot.send_message(message.channel, 'Praise be unto him!')
-    elif message.content.startswith('thanks wizbot') or message.content.startswith('Thanks wizbot'):
+    if message.content.startswith('thanks wizbot') or message.content.startswith('Thanks wizbot'):
         await bot.send_message(message.channel, 'No problem')
     elif message.content.startswith('!master') and sender == owner:
         await bot.send_message(message.channel, 'My master is {}'.format(owner))
-    elif message.content.startswith('!dilly'):
-        await bot.send_message(message.channel, 'Dilly Dilly')
     await bot.process_commands(message)
 
 def startup():
