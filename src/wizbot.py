@@ -67,7 +67,7 @@ async def gamage():
 
 @commands.cooldown(1, 60, BucketType.user)
 @bot.command(description='I will make the choice for you')
-async def choose(*choices : str):
+async def cs(*choices : str):
     await bot.say(random.choice(choices))
 
 @commands.cooldown(1, 60, BucketType.user)
