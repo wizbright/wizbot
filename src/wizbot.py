@@ -67,9 +67,9 @@ async def choose(*choices : str):
 async def clayton():
     num = random.randrange(start=1, stop=2)
     if num == 1:
-        await bot.say('/tts :^)')
+        await bot.say(':^)')
     if num == 2:
-        await bot.say('/tts (^:')
+        await bot.say('(^:')
 
 @bot.event
 async def on_message(message):
@@ -77,22 +77,14 @@ async def on_message(message):
     #print(sender)
     if message.content.startswith('!crk') or message.content.startswith('!Crk'):
         await bot.add_reaction(message, '🇫')
-        tmp = await bot.send_message(message.channel, '/tts Praise be unto him!', tts=true)
+        tmp = await bot.send_message(message.channel, 'Praise be unto him!')
     elif message.content.startswith('thanks wizbot') or message.content.startswith('Thanks wizbot'):
-        await bot.send_message(message.channel, '/tts No problem', tts=true)
+        await bot.send_message(message.channel, 'No problem')
     elif message.content.startswith('!master') and sender == owner:
-        await bot.send_message(message.channel, 'My master is {}'.format(owner), tts=true)
+        await bot.send_message(message.channel, 'My master is {}'.format(owner))
     elif message.content.startswith('!dilly'):
-        await bot.send_message(message.channel, 'Dilly Dilly', tts=true)
+        await bot.send_message(message.channel, 'Dilly Dilly')
     await bot.process_commands(message)
-
-def loadCogs():
-    for extension in os.listdir("cogs"): # Load cogs
-            if extension.endswith('.py'):
-                try:
-                    bot.load_extension("cogs." + extension[:-3])
-                except Exception as e:
-                    print('Failed to load extension {}\n{}: {}'.format(extension, type(e).__name__, e))
 
 def startup():
     #oadCogs()
