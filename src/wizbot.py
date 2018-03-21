@@ -64,6 +64,11 @@ async def triggered():
 @bot.command(description='But is he a bro?')
 async def gamage():
     await bot.say('What a bro')
+    
+@commands.cooldown(1, 69, BucketType.server)
+@bot.command(description='eggplant..')
+async def boner():
+    await bot.say('🍆')
 
 @commands.cooldown(1, 60, BucketType.user)
 @bot.command(description='I will make the choice for you')
