@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 import discord, asyncio
-import configparser, random, sys, os
+import configparser, random, sys, os, re
 import logging, logging.handlers
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
@@ -94,6 +94,19 @@ async def dilly():
 async def crk():
     await bot.say('Praise be unto him! 🇫')
     # the reaction will have to be added later
+
+@commands.cooldown(1, 60, BucketType.user)
+@bot.command()
+async def dice(ctx,args):
+    example = 'ex: `!dice d20` or `!dice 3d10+3`'
+    roll_format = "[**{}**: {}]"
+    if not re.match('^(\d|10)d([1-9]\d?|100)([\+\-][1-9][0-9]?)?$', arg):
+        title = '**An Error Occurred**'
+        description = '_Invalid formatting in:_ **{}**'.format(arg)
+        use_example = True
+    else:
+        pass
+
 
 @bot.event
 async def on_message(message):
