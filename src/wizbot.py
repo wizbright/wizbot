@@ -11,7 +11,7 @@ client = discord.Client()
 config = configparser.ConfigParser()
 config.read('bot.cfg')
 
-bot = commands.Bot(command_prefix='!', description="Wizzie's Bot")
+bot = commands.Bot(command_prefix='.', description="Wizzie's Bot")
 # Config values
 token = config.get('BOT_INFO', 'token')
 owner = config.get('BOT_INFO', 'owner')
