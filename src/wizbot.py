@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 
-import discord, asyncio
-import configparser, random, sys, os, re
+import discord, asyncio, re
+import configparser, random, sys, os
 import logging, logging.handlers
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
@@ -11,13 +11,11 @@ client = discord.Client()
 config = configparser.ConfigParser()
 config.read('bot.cfg')
 
-bot = commands.Bot(command_prefix='!', description="Wizzie's Bot")
+bot = commands.Bot(command_prefix='.', description="Wizzie's Bot")
 # Config values
 token = config.get('BOT_INFO', 'token')
 owner = config.get('BOT_INFO', 'owner')
 #print(allowed)
-
-way = True
 
 def logger():
     errformat = logging.Formatter(
@@ -64,7 +62,7 @@ async def triggered():
 @bot.command(description='But is he a bro?')
 async def gamage():
     await bot.say('What a bro')
-    
+
 @commands.cooldown(1, 69, BucketType.server)
 @bot.command(description='eggplant..')
 async def boner():
