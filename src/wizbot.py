@@ -75,7 +75,7 @@ async def cs(*choices : str):
 
 @commands.cooldown(1, 60, BucketType.user)
 @bot.command()
-async def clayton():
+async def ayy():
     num = random.randrange(start=1, stop=2)
     if num == 1:
         await bot.say(':^)')
