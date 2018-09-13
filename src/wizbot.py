@@ -6,6 +6,7 @@ import configparser, random, sys, os
 import logging, logging.handlers
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
+from discord import Embed
 
 client = discord.Client()
 config = configparser.ConfigParser()
@@ -16,6 +17,14 @@ bot = commands.Bot(command_prefix='.', description="Wizzie's Bot")
 token = config.get('BOT_INFO', 'token')
 owner = config.get('BOT_INFO', 'owner')
 #print(allowed)
+
+bot_logger = logger()
+
+def dice_roll(num_sides: int, num_rolls: int = 1):
+    rolls = []
+    while range(num_rolls):
+        rolls.append(random.randrange(1, num_sides+1))
+    return rolls
 
 def logger():
     errformat = logging.Formatter(
@@ -93,17 +102,45 @@ async def crk():
     await bot.say('Praise be unto him! 🇫')
     # the reaction will have to be added later
 
-@commands.cooldown(1, 60, BucketType.user)
-@bot.command()
+@commands.cooldown(5, 20, BucketType.user)
+@bot.command(description='Roll some :game_die: boiiii')
 async def dice(ctx,args):
-    example = 'ex: `!dice d20` or `!dice 3d10+3`'
-    roll_format = "[**{}**: {}]"
-    if not re.match('^(\d|10)d([1-9]\d?|100)([\+\-][1-9][0-9]?)?$', arg):
-        title = '**An Error Occurred**'
-        description = '_Invalid formatting in:_ **{}**'.format(arg)
-        use_example = True
-    else:
-        pass
+    example = 'ex: `{0}dice d20` or `{0}dice 3d10+3`'.format(bot.command_prefix)
+    roll_format = "[**{}**: {} =**{}**]"
+    pattern = r'^(\d|10)d(4|6|10|12|20|100)([\+\-][1-9][0-9]?)?$'
+    try:
+        title = 'Dice Roll :game_die:'
+        color = 'purple'
+        description_elements = []
+        for arg in args:
+            if not re.match(pattern, arg):
+                title = '**An Error Occurred**'
+                description = '_Invalid formatting in:_ **{}**'.format(arg)
+                color = 'red'
+                raise ValueError('Incorrect formatting')
+            else:
+                pieces = re.match(pattern, arg).groups()
+                rolls = dice_roll(int(pieces[1]), num_rolls = int(pieces[0]))
+                rolls.append(int(pieces[2]))
+                roll_amount = sum(rolls)
+                roll_description = roll_format.format(arg, '+'.join(rolls), roll_amount)
+                description_elements.append(roll_description)
+        msg = Embed(
+            title=title,
+            description='\n'.join(description_elements),
+            color=color
+        )
+        await bot.say(embed=msg)        
+    except ValueError:
+        bot_logger.info('Could not process dice roll: {}'.format(arg))
+        msg = Embed(
+            title=title,
+            description='\n'.join[description, example],
+            color=color
+        )
+        await bot.say(embed=msg)
+
+
 
 
 @bot.event
