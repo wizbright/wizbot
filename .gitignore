@@ -1,5 +1,5 @@
 # Project Specific
-wizbot/bot.cfg
+bot.cfg
 *.log
 
 # Byte-compiled / optimized / DLL files

@@ -18,11 +18,10 @@ token = config.get('BOT_INFO', 'token')
 owner = config.get('BOT_INFO', 'owner')
 #print(allowed)
 
-bot_logger = logger()
 
 def dice_roll(num_sides: int, num_rolls: int = 1):
     rolls = []
-    while range(num_rolls):
+    for i in range(num_rolls):
         rolls.append(random.randrange(1, num_sides+1))
     return rolls
 
@@ -65,7 +64,6 @@ async def on_ready():
 async def triggered():
     await bot.say('HOLY FUCK I\'M TRIGGERED')
     await bot.say('REEEEEEEEEEEEEEEEEEEEEEE')
-    await bot.say()
 
 @commands.cooldown(1, 60, BucketType.user)
 @bot.command(description='But is he a bro?')
@@ -104,38 +102,68 @@ async def crk():
 
 @commands.cooldown(5, 20, BucketType.user)
 @bot.command(description='Roll some :game_die: boiiii')
-async def dice(ctx,args):
-    example = 'ex: `{0}dice d20` or `{0}dice 3d10+3`'.format(bot.command_prefix)
-    roll_format = "[**{}**: {} =**{}**]"
-    pattern = r'^(\d|10)d(4|6|10|12|20|100)([\+\-][1-9][0-9]?)?$'
+async def dice(*args):
+    bot_logger = logger()
+    example = "ex: `{0}dice d20` or `{0}dice 3d10+3`\nTry `{0}dice help` for more info".format(bot.command_prefix)
+    roll_format = "[**{}**:{}**{}**]"
+    pattern = r'^(\d|10)?d(4|6|10|12|20|100)([\+\-][1-9][0-9]?)?$'
+    max_dice = 10
+    max_args = 10
     try:
         title = 'Dice Roll :game_die:'
-        color = 'purple'
+        color = discord.Color.purple()
         description_elements = []
+        if len(args) < 1:
+            title = '**An Error Occurred**'
+            description = '_Not enough arguments_'
+            color = discord.Color.red()
+            raise ValueError('No args')
+        if len(args) > max_args:
+            title = '**An Error Occurred**'
+            description = '_Too many arguments_: Max of {} rolls allowed'.format(max_args)
+            color = discord.Color.red()
+            raise ValueError('Too many args')
+        if args[0] in ['help', '-h']:
+            title = '**Dice Rolling Utility** :game_die:'
+            description = [
+                'Usage: `{0}dice [ROLL] [ROLL2] ...`',
+                'Dice sides supported: 4, 6, 10, 12, 20, 100',
+                'Max number of dice per roll: {1}',
+                'Max number of rolls per command: {2}'
+            ]
+            description = "\n".join(description).format(bot.command_prefix, max_dice, max_args)
+            color = discord.Color.blue()
+            raise ValueError('Help wanted')
         for arg in args:
             if not re.match(pattern, arg):
                 title = '**An Error Occurred**'
                 description = '_Invalid formatting in:_ **{}**'.format(arg)
-                color = 'red'
+                color = discord.Color.red()
                 raise ValueError('Incorrect formatting')
             else:
-                pieces = re.match(pattern, arg).groups()
-                rolls = dice_roll(int(pieces[1]), num_rolls = int(pieces[0]))
-                rolls.append(int(pieces[2]))
+                num_rolls, die_size, modifier = re.match(pattern, arg).groups()
+                if num_rolls is None:
+                    num_rolls = 1
+                rolls = dice_roll(int(die_size), num_rolls=int(num_rolls))
+                if modifier is not None:
+                    rolls.append(int(modifier))
                 roll_amount = sum(rolls)
-                roll_description = roll_format.format(arg, '+'.join(rolls), roll_amount)
+                if len(rolls) is 1:
+                    roll_description = roll_format.format(arg, '', roll_amount)
+                else:
+                    roll_description = roll_format.format(arg, '+'.join([str(el) for el in rolls])+'=', roll_amount)
                 description_elements.append(roll_description)
         msg = Embed(
             title=title,
-            description='\n'.join(description_elements),
+            description='\n'.join([str(el) for el in description_elements]),
             color=color
         )
         await bot.say(embed=msg)        
-    except ValueError:
-        bot_logger.info('Could not process dice roll: {}'.format(arg))
+    except ValueError as e:
+        bot_logger.info('Could not process dice roll: {}'.format(e))
         msg = Embed(
             title=title,
-            description='\n'.join[description, example],
+            description='\n'.join([description, example]),
             color=color
         )
         await bot.say(embed=msg)
