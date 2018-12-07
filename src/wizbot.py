@@ -106,7 +106,7 @@ async def dice(*args):
     bot_logger = logger()
     example = "ex: `{0}dice d20` or `{0}dice 3d10+3`\nTry `{0}dice help` for more info".format(bot.command_prefix)
     roll_format = "[**{}**:{}**{}**]"
-    pattern = r'^(\d|10)?d(4|6|10|12|20|100)([\+\-][1-9][0-9]?)?$'
+    pattern = r'^(\d|10)?d(4|6|8|10|12|20|100)([\+\-][1-9][0-9]?)?$'
     max_dice = 10
     max_args = 10
     try:
